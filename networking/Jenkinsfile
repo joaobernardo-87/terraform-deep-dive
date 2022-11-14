@@ -38,7 +38,7 @@ pipeline {
         }
         stage('NetworkPlan'){
             steps {
-                dir('m8/networking/'){
+                dir('/networking/'){
                     script {
                         try {
                            sh "terraform workspace new ${params.WORKSPACE}"
@@ -60,13 +60,13 @@ pipeline {
                         apply = true
                     } catch (err) {
                         apply = false
-                        dir('m8/networking/'){
+                        dir('/networking/'){
                             sh "terraform destroy -auto-approve"
                         }
                         currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-                        dir('m8/networking/'){
+                        dir('/networking/'){
                             unstash "terraform-networking-plan"
                             sh 'terraform apply terraform-networking.tfplan'
                         }
